@@ -1,16 +1,12 @@
+import "package:android_dev/screens/content/comment_widget.dart";
 import "package:android_dev/screens/home_screen/models/comment_model.dart";
 import "package:flutter/material.dart";
 
 /// Instagram-style comments panel that slides up from the bottom.
-class CommentsSheet extends StatefulWidget {
+class CommentsSheet extends StatelessWidget {
   final List<CommentModel> comments;
   const CommentsSheet({super.key, required this.comments});
 
-  @override
-  State<CommentsSheet> createState() => _CommentsSheetState();
-}
-
-class _CommentsSheetState extends State<CommentsSheet> {
   @override
   Widget build(BuildContext context) {
     return DraggableScrollableSheet(
@@ -37,66 +33,18 @@ class _CommentsSheetState extends State<CommentsSheet> {
             ),
             const Divider(),
             Expanded(
-              child: widget.comments.isEmpty
+              child: comments.isEmpty
                   ? const Center(child: Text('Пока нет комментариев'))
                   : ListView.builder(
                       controller: scrollController,
-                      itemCount: widget.comments.length,
+                      itemCount: comments.length,
                       itemBuilder: (context, index) =>
-                          _buildComment(widget.comments[index]),
+                          CommentWidget(comment: comments[index]),
                     ),
             ),
           ],
         );
       },
-    );
-  }
-
-  Widget _buildComment(CommentModel comment) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 18,
-            child: Text(comment.userName[0].toUpperCase()),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  comment.userName,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
-                  ),
-                ),
-                const SizedBox(height: 2),
-                Text(comment.text, style: const TextStyle(fontSize: 14)),
-              ],
-            ),
-          ),
-          GestureDetector(
-            onTap: () => setState(comment.toggleLike),
-            child: Column(
-              children: [
-                Icon(
-                  comment.isLiked ? Icons.favorite : Icons.favorite_border,
-                  size: 16,
-                  color: comment.isLiked ? Colors.red : Colors.grey,
-                ),
-                Text(
-                  '${comment.likeCount}',
-                  style: const TextStyle(fontSize: 12, color: Colors.grey),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

@@ -115,6 +115,17 @@ class _PostWidgetState extends State<PostWidget> {
               style: const TextStyle(fontSize: 16.0),
             ),
           ),
+          if ((widget.post?.comments ?? []).isNotEmpty)
+            GestureDetector(
+              onTap: openBottomSheet,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  'Посмотреть все комментарии (${widget.post!.comments.length})',
+                  style: TextStyle(color: Colors.grey[600]),
+                ),
+              ),
+            ),
 
         ],)
 
