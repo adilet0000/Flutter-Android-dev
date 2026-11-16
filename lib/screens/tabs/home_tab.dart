@@ -1,30 +1,19 @@
 import "package:android_dev/screens/content/post_widget.dart";
 import "package:android_dev/screens/content/story_widget.dart";
-import "package:android_dev/screens/home_screen/data/posts_data.dart";
-import "package:android_dev/screens/home_screen/services/post_services.dart";
+import "package:android_dev/screens/home_screen/providers/post_providers.dart";
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 
-class HomeTab extends StatefulWidget {
+/// No initState / setState / PostServices() here anymore:
+/// the data lives in Riverpod and is loaded by the providers themselves.
+class HomeTab extends ConsumerWidget {
   const HomeTab({super.key});
 
   @override
-  State<HomeTab> createState() => _HomeTabState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final posts = ref.watch(postsProvider);
+    final stories = ref.watch(storiesProvider);
 
-class _HomeTabState extends State<HomeTab> {
-  // Created once, so likes/comments are not reset on every rebuild.
-  final PostServices postServices = PostServices();
-
-  @override
-  void initState() {
-    super.initState();
-    // Data comes from posts_data.dart, added via the service's batch functions
-    postServices.batchAddPosts(postsData);
-    postServices.batchAddStories(storiesData);
-  }
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[200],
       appBar: AppBar(
@@ -39,14 +28,16 @@ class _HomeTabState extends State<HomeTab> {
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              itemCount: postServices.stories.length,
+              itemCount: stories.length,
               itemBuilder: (context, index) {
-                final story = postServices.stories[index];
+                final story = stories[index];
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: StoryWidget(
                     story: story,
-                    onTap: () => setState(() => story.isViewed = true),
+                    onTap: () => ref
+                        .read(storiesProvider.notifier)
+                        .markViewed(story.userName),
                   ),
                 );
               },
@@ -56,11 +47,11 @@ class _HomeTabState extends State<HomeTab> {
           // Feed takes the rest of the screen
           Expanded(
             child: ListView.builder(
-              itemCount: postServices.posts.length,
+              itemCount: posts.length,
               itemBuilder: (context, index) {
                 return Padding(
                   padding: const EdgeInsets.all(4.0),
-                  child: PostWidget(post: postServices.posts[index]),
+                  child: PostWidget(post: posts[index]),
                 );
               },
             ),

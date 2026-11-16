@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import "screens/main_screen.dart";
 
 void main() {
-  runApp(const MainApp());
+  // ProviderScope is the "storage" for all Riverpod providers.
+  // It must wrap the whole app, otherwise ref.watch/ref.read won't work.
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends StatelessWidget {

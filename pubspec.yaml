@@ -10,6 +10,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.4.1
   flutter:
     sdk: flutter
+  flutter_riverpod: ^3.5.0
   
 
 dev_dependencies:

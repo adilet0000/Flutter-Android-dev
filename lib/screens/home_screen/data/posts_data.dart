@@ -7,6 +7,7 @@ import 'package:android_dev/screens/home_screen/models/story_model.dart';
 
 final List<PostModel> postsData = [
   PostModel(
+    id: 1,
     imageUrl: 'https://picsum.photos/seed/issykkul/600/600',
     description: 'Иссык-Куль утром — вода как зеркало 🌊',
     likeCount: 124,
@@ -17,6 +18,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 2,
     imageUrl: 'https://picsum.photos/seed/alaarcha/600/600',
     description: 'Поход в Ала-Арчу. 12 км и ни разу не пожалел 🏔️',
     likeCount: 89,
@@ -26,6 +28,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 3,
     imageUrl: 'https://picsum.photos/seed/coffee/600/600',
     description: 'Лучший кофе в Бишкеке нашёлся случайно ☕',
     likeCount: 56,
@@ -36,6 +39,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 4,
     imageUrl: 'https://picsum.photos/seed/laptop/600/600',
     description: 'Первое Flutter-приложение запустилось без ошибок 🎉',
     likeCount: 210,
@@ -47,6 +51,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 5,
     imageUrl: 'https://picsum.photos/seed/sunset/600/600',
     description: 'Закат с крыши общежития 🌇',
     likeCount: 73,
@@ -56,6 +61,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 6,
     imageUrl: 'https://picsum.photos/seed/plov/600/600',
     description: 'Мамин плов — ничего лучше нет 🍚',
     likeCount: 145,
@@ -66,6 +72,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 7,
     imageUrl: 'https://picsum.photos/seed/library/600/600',
     description: 'Сессия близко, живу в библиотеке 📚',
     likeCount: 38,
@@ -75,6 +82,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 8,
     imageUrl: 'https://picsum.photos/seed/football/600/600',
     description: 'Выиграли межфакультетский турнир по футболу ⚽🏆',
     likeCount: 302,
@@ -85,6 +93,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 9,
     imageUrl: 'https://picsum.photos/seed/snow/600/600',
     description: 'Первый снег в этом году ❄️',
     likeCount: 67,
@@ -94,6 +103,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 10,
     imageUrl: 'https://picsum.photos/seed/cat/600/600',
     description: 'Знакомьтесь, это Барсик. Он главный в доме 🐱',
     likeCount: 412,
@@ -105,6 +115,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 11,
     imageUrl: 'https://picsum.photos/seed/concert/600/600',
     description: 'Концерт был просто огонь 🎸',
     likeCount: 98,
@@ -114,6 +125,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 12,
     imageUrl: 'https://picsum.photos/seed/bike/600/600',
     description: '40 км на велике вокруг города 🚴',
     likeCount: 51,
@@ -123,6 +135,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 13,
     imageUrl: 'https://picsum.photos/seed/books/600/600',
     description: 'Прочитал 10 книг за осень. Советую «Чистый код» 📖',
     likeCount: 84,
@@ -133,6 +146,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 14,
     imageUrl: 'https://picsum.photos/seed/osh/600/600',
     description: 'Ош — город с историей в 3000 лет 🏛️',
     likeCount: 133,
@@ -142,6 +156,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 15,
     imageUrl: 'https://picsum.photos/seed/hackathon/600/600',
     description: '48 часов хакатона, 3 пиццы и одно рабочее MVP 💻',
     likeCount: 176,
@@ -152,6 +167,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 16,
     imageUrl: 'https://picsum.photos/seed/horse/600/600',
     description: 'Выходные на джайлоо, кони и свежий воздух 🐎',
     likeCount: 92,
@@ -161,6 +177,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 17,
     imageUrl: 'https://picsum.photos/seed/rain/600/600',
     description: 'Дождливый день — идеально для кодинга 🌧️',
     likeCount: 29,
@@ -169,6 +186,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 18,
     imageUrl: 'https://picsum.photos/seed/graduation/600/600',
     description: 'Брат окончил университет! Горжусь 🎓',
     likeCount: 268,
@@ -179,6 +197,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 19,
     imageUrl: 'https://picsum.photos/seed/market/600/600',
     description: 'Ошский базар, фрукты прямо с грядки 🍑',
     likeCount: 61,
@@ -188,6 +207,7 @@ final List<PostModel> postsData = [
     ],
   ),
   PostModel(
+    id: 20,
     imageUrl: 'https://picsum.photos/seed/stars/600/600',
     description: 'Ночное небо в горах — миллион звёзд ✨',
     likeCount: 189,

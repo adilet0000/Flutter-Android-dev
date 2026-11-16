@@ -1,35 +1,38 @@
 import 'package:android_dev/screens/home_screen/models/comment_model.dart';
 
+/// Immutable: to change a post, create a copy with copyWith().
+/// Riverpod notices a new object and rebuilds the UI.
 class PostModel {
-  final String? imageUrl;
-  int? likeCount;
-  int? commentCount;
-  final String? description;
-  bool isLiked;
+  final int id;
+  final String imageUrl;
+  final String description;
+  final int likeCount;
+  final bool isLiked;
   final List<CommentModel> comments;
 
-  PostModel({
-    this.imageUrl,
-    this.likeCount,
-    this.commentCount,
-    this.description,
+  const PostModel({
+    required this.id,
+    required this.imageUrl,
+    this.description = '',
+    this.likeCount = 0,
     this.isLiked = false,
+    this.comments = const [],
+  });
+
+  int get commentCount => comments.length;
+
+  PostModel copyWith({
+    int? likeCount,
+    bool? isLiked,
     List<CommentModel>? comments,
-  }) : comments = comments ?? [];
-
-  void addLike(int newCount) {
-    // This method should ideally update the like count in a state management solution
-    likeCount = newCount;
+  }) {
+    return PostModel(
+      id: id,
+      imageUrl: imageUrl,
+      description: description,
+      likeCount: likeCount ?? this.likeCount,
+      isLiked: isLiked ?? this.isLiked,
+      comments: comments ?? this.comments,
+    );
   }
-
-  void toggleLike() {
-    isLiked = !isLiked;
-    addLike((likeCount ?? 0) + (isLiked ? 1 : -1));
-  }
-
-  void addComment(int newCount) {
-    // This method should ideally update the comment count in a state management solution
-    commentCount = newCount;
-  }
-
 }

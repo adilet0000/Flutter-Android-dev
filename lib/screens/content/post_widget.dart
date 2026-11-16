@@ -1,20 +1,16 @@
 import "package:android_dev/screens/content/comments_sheet.dart";
 import "package:android_dev/screens/home_screen/models/post_model.dart";
+import "package:android_dev/screens/home_screen/providers/post_providers.dart";
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 
-class PostWidget extends StatefulWidget {
-  final PostModel? post;
-  const PostWidget({super.key,required this.post});
+/// ConsumerWidget = StatelessWidget that also gets `ref` to talk to Riverpod.
+/// No setState here: the like is stored in postsProvider.
+class PostWidget extends ConsumerWidget {
+  final PostModel post;
+  const PostWidget({super.key, required this.post});
 
-  @override
-  State<PostWidget> createState() => _PostWidgetState();
-}
-
-class _PostWidgetState extends State<PostWidget> {
-  // Like state lives in PostModel so it survives ListView scrolling.
-  bool get isLiked => widget.post?.isLiked ?? false;
-
- void openBottomSheet() {
+  void openBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -23,13 +19,13 @@ class _PostWidgetState extends State<PostWidget> {
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
       ),
       builder: (BuildContext context) {
-        return CommentsSheet(comments: widget.post?.comments ?? []);
+        return CommentsSheet(postId: post.id);
       },
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -52,7 +48,7 @@ class _PostWidgetState extends State<PostWidget> {
             child: AspectRatio(
               aspectRatio: 1,
               child: Image.network(
-                widget.post?.imageUrl ?? 'https://picsum.photos/600',
+                post.imageUrl,
                 width: double.infinity,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, progress) {
@@ -75,20 +71,16 @@ class _PostWidgetState extends State<PostWidget> {
             children: [
               IconButton(
                 icon: Icon(
-                  isLiked ? Icons.favorite : Icons.favorite_border,
-                  color: isLiked ? Colors.red : null,
+                  post.isLiked ? Icons.favorite : Icons.favorite_border,
+                  color: post.isLiked ? Colors.red : null,
                 ),
-                onPressed: () {
-                  setState(() {
-                    widget.post?.toggleLike();
-                  });
-                },
+                // ref.read(...notifier) = "call a method", no rebuild subscription
+                onPressed: () =>
+                    ref.read(postsProvider.notifier).toggleLike(post.id),
               ),
               IconButton(
                 icon: const Icon(Icons.comment),
-                onPressed: () {
-                  openBottomSheet();
-                },
+                onPressed: () => openBottomSheet(context),
               ),
               IconButton(
                 icon: const Icon(Icons.share),
@@ -104,24 +96,24 @@ class _PostWidgetState extends State<PostWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              'Нравится: ${widget.post?.likeCount ?? 0}',
+              'Нравится: ${post.likeCount}',
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(
-              widget.post?.description ?? '',
+              post.description,
               style: const TextStyle(fontSize: 16.0),
             ),
           ),
-          if ((widget.post?.comments ?? []).isNotEmpty)
+          if (post.comments.isNotEmpty)
             GestureDetector(
-              onTap: openBottomSheet,
+              onTap: () => openBottomSheet(context),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Text(
-                  'Посмотреть все комментарии (${widget.post!.comments.length})',
+                  'Посмотреть все комментарии (${post.commentCount})',
                   style: TextStyle(color: Colors.grey[600]),
                 ),
               ),

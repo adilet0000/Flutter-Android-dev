@@ -2,19 +2,16 @@ import "package:android_dev/screens/home_screen/models/comment_model.dart";
 import "package:flutter/material.dart";
 
 /// One comment row: avatar, name + text, and a like button on the right.
-class CommentWidget extends StatefulWidget {
+/// Stateless: it only draws the comment. What happens on tap is decided
+/// by the parent (CommentsSheet), which calls Riverpod.
+class CommentWidget extends StatelessWidget {
   final CommentModel comment;
-  const CommentWidget({super.key, required this.comment});
+  final VoidCallback? onLikeTap;
 
-  @override
-  State<CommentWidget> createState() => _CommentWidgetState();
-}
+  const CommentWidget({super.key, required this.comment, this.onLikeTap});
 
-class _CommentWidgetState extends State<CommentWidget> {
   @override
   Widget build(BuildContext context) {
-    final comment = widget.comment;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Row(
@@ -42,7 +39,7 @@ class _CommentWidgetState extends State<CommentWidget> {
             ),
           ),
           GestureDetector(
-            onTap: () => setState(comment.toggleLike),
+            onTap: onLikeTap,
             child: Column(
               children: [
                 Icon(
