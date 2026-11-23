@@ -4,15 +4,16 @@ import "package:android_dev/screens/home_screen/providers/post_providers.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
-/// No initState / setState / PostServices() here anymore:
-/// the data lives in Riverpod and is loaded by the providers themselves.
+/// Feed screen. Data comes from the database through StreamProviders,
+/// so it is an AsyncValue: loading → data (or error).
 class HomeTab extends ConsumerWidget {
   const HomeTab({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final posts = ref.watch(postsProvider);
-    final stories = ref.watch(storiesProvider);
+    final posts = ref.watch(feedProvider);
+    final stories = ref.watch(storiesProvider).value ?? const [];
+    final viewed = ref.watch(viewedStoriesProvider);
 
     return Scaffold(
       backgroundColor: Colors.grey[200],
@@ -34,9 +35,10 @@ class HomeTab extends ConsumerWidget {
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: StoryWidget(
-                    story: story,
+                    story: story.copyWith(
+                        isViewed: viewed.contains(story.userName)),
                     onTap: () => ref
-                        .read(storiesProvider.notifier)
+                        .read(viewedStoriesProvider.notifier)
                         .markViewed(story.userName),
                   ),
                 );
@@ -46,14 +48,19 @@ class HomeTab extends ConsumerWidget {
           const Divider(height: 1),
           // Feed takes the rest of the screen
           Expanded(
-            child: ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(4.0),
-                  child: PostWidget(post: posts[index]),
-                );
-              },
+            child: posts.when(
+              loading: () => const Center(child: CircularProgressIndicator()),
+              error: (error, _) =>
+                  Center(child: Text('Не удалось загрузить ленту: $error')),
+              data: (posts) => ListView.builder(
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: PostWidget(post: posts[index]),
+                  );
+                },
+              ),
             ),
           ),
         ],

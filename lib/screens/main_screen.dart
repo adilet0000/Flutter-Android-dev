@@ -1,5 +1,8 @@
+import "package:android_dev/screens/tabs/activity_tab.dart";
 import "package:android_dev/screens/tabs/home_tab.dart";
+import "package:android_dev/screens/tabs/new_post_tab.dart";
 import "package:android_dev/screens/tabs/placeholder_tab.dart";
+import "package:android_dev/screens/tabs/profile_tab.dart";
 import "package:android_dev/widgets/animated_indexed_stack.dart";
 import "package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart";
 import "package:flutter/material.dart";
@@ -22,12 +25,14 @@ class _MainScreenState extends State<MainScreen> {
     Icons.person_outline,
   ];
 
-  static const _pages = [
-    HomeTab(),
-    PlaceholderTab(title: 'Search', icon: Icons.search),
-    PlaceholderTab(title: 'New post', icon: Icons.add_box),
-    PlaceholderTab(title: 'Activity', icon: Icons.favorite_border),
-    PlaceholderTab(title: 'Profile', icon: Icons.person_outline),
+  // Not const any more: the New post tab needs a callback that switches
+  // back to the feed after publishing.
+  late final List<Widget> _pages = [
+    const HomeTab(),
+    const PlaceholderTab(title: 'Search', icon: Icons.search),
+    NewPostTab(onPosted: () => setState(() => _currentIndex = 0)),
+    const ActivityTab(),
+    const ProfileTab(),
   ];
 
   @override

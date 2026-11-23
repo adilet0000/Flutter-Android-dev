@@ -5,7 +5,8 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
 /// ConsumerWidget = StatelessWidget that also gets `ref` to talk to Riverpod.
-/// No setState here: the like is stored in postsProvider.
+/// A like is written to the database; the feed stream then brings back
+/// the updated post and this widget is rebuilt with it.
 class PostWidget extends ConsumerWidget {
   final PostModel post;
   const PostWidget({super.key, required this.post});
@@ -43,6 +44,28 @@ class PostWidget extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Author (from the users table)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(4, 0, 4, 8),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 16,
+                  backgroundImage: post.authorAvatarUrl != null
+                      ? NetworkImage(post.authorAvatarUrl!)
+                      : null,
+                  child: post.authorAvatarUrl == null
+                      ? Text(post.authorName[0].toUpperCase())
+                      : null,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  post.authorName,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
           ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
             child: AspectRatio(
@@ -74,9 +97,8 @@ class PostWidget extends ConsumerWidget {
                   post.isLiked ? Icons.favorite : Icons.favorite_border,
                   color: post.isLiked ? Colors.red : null,
                 ),
-                // ref.read(...notifier) = "call a method", no rebuild subscription
                 onPressed: () =>
-                    ref.read(postsProvider.notifier).toggleLike(post.id),
+                    ref.read(feedControllerProvider).toggleLike(post.id),
               ),
               IconButton(
                 icon: const Icon(Icons.comment),
@@ -107,7 +129,7 @@ class PostWidget extends ConsumerWidget {
               style: const TextStyle(fontSize: 16.0),
             ),
           ),
-          if (post.comments.isNotEmpty)
+          if (post.commentCount > 0)
             GestureDetector(
               onTap: () => openBottomSheet(context),
               child: Padding(

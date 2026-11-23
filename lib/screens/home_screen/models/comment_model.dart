@@ -1,24 +1,18 @@
-/// Immutable: to change a comment, create a copy with copyWith().
-/// Riverpod notices a new object and rebuilds the UI.
+/// One comment, combined from comments + users (author) + comment_likes.
 class CommentModel {
-  final String userName;
+  final int id;
+  final int postId;
+  final String userName; // author
   final String text;
   final int likeCount;
-  final bool isLiked;
+  final bool isLiked; // liked by the CURRENT user
 
   const CommentModel({
+    required this.id,
+    required this.postId,
     required this.userName,
     required this.text,
     this.likeCount = 0,
     this.isLiked = false,
   });
-
-  CommentModel copyWith({int? likeCount, bool? isLiked}) {
-    return CommentModel(
-      userName: userName,
-      text: text,
-      likeCount: likeCount ?? this.likeCount,
-      isLiked: isLiked ?? this.isLiked,
-    );
-  }
 }

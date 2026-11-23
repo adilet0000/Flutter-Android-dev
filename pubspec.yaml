@@ -8,6 +8,9 @@ environment:
 
 dependencies:
   animated_bottom_navigation_bar: ^1.4.1
+  crypto: ^3.0.8
+  drift: ^2.35.4
+  drift_flutter: ^0.3.1
   flutter:
     sdk: flutter
   flutter_riverpod: ^3.5.0
@@ -17,6 +20,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^6.0.0
+  drift_dev: ^2.35.3
+  build_runner: ^2.17.1
 
 flutter:
   uses-material-design: true
